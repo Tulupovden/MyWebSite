@@ -45,6 +45,10 @@ class NameForm(FlaskForm):
     name = StringField('Как вас зовут?', validators=[DataRequired()])
     submit = SubmitField('Отправить')
 
+    @app.shell_context_processor
+    def make_shell_context(self):
+        return dict(db=db, User=User, Role=Role)
+
 
 @app.errorhandler(404)
 def page_not_found(e):

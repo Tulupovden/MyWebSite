@@ -26,10 +26,21 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField('Повторите пароль', validators=[DataRequired()])
     submit = SubmitField('Зарегистрироваться')
 
-    def validate_email(self, field):
-        if User.query.filter_by(email=field.data.lower()).first():
-            raise ValidationError('Электронная почта уже зарегистрирована.')
 
-    def validate_username(self, field):
-        if User.query.filter_by(username=field.data).first():
-            raise ValidationError('Такое имя пользователя уже существует.')
+def validate_email(self, field):
+    if User.query.filter_by(email=field.data.lower()).first():
+        raise ValidationError('Электронная почта уже зарегистрирована.')
+
+
+def validate_username(self, field):
+    if User.query.filter_by(username=field.data).first():
+        raise ValidationError('Такое имя пользователя уже существует.')
+
+
+class ChangePasswordForm(FlaskForm):
+    old_password = PasswordField('Старый пароль', validators=[DataRequired()])
+    password = PasswordField('Новый пароль', validators=[
+        DataRequired(), EqualTo('password2', message='Пароли должны совпадать.')])
+    password2 = PasswordField('Повторите новый пароль',
+                              validators=[DataRequired()])
+    submit = SubmitField('Обновить пароль')

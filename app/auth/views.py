@@ -5,7 +5,7 @@ from .. import db
 from ..email import send_email
 from ..models import User
 from .forms import LoginForm, RegistrationForm, ChangePasswordForm, \
-    PasswordResetRequestForm, PasswordResetForm
+    PasswordResetRequestForm, PasswordResetForm, ChangeEmailForm
 
 
 @auth.before_app_request
@@ -135,3 +135,33 @@ def password_reset(token):
         else:
             return redirect(url_for('main.index'))
     return render_template('auth/reset_password.html', form=form)
+
+
+@auth.route('/change_email', methods=['GET', 'POST'])
+@login_required
+def change_email_request():
+    form = ChangeEmailForm()
+    if form.validate_on_submit():
+        if current_user.verify_password(form.password.data):
+            new_email = form.email.data.lower()
+            token = current_user.generate_email_change_token(new_email)
+            send_email(new_email, 'Подтвердите свой адрес электронной почты',
+                       'auth/email/change_email',
+                       user=current_user, token=token)
+            flash('Электронное письмо с инструкциями для подтверждения вашего нового электронного '
+                  'адреса отправлено.')
+            return redirect(url_for('main.index'))
+        else:
+            flash('Неверный адрес электронной почты или пароль.')
+    return render_template("auth/change_email.html", form=form)
+
+
+@auth.route('/change_email/<token>')
+@login_required
+def change_email(token):
+    if current_user.change_email(token):
+        db.session.commit()
+        flash('Ваш адрес электронной почты был обновлен.')
+    else:
+        flash('Неверный запрос.')
+    return redirect(url_for('main.index'))

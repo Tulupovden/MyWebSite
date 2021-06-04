@@ -9,5 +9,7 @@
 </div>
 <div class="col-md-4">
     {{ wtf.quick_form(form) }}
+        <br>
+    <p>Новый пользователь? <a href="{{ url_for('auth.register') }}">Нажмите сюда для регистрации</a>.</p>
 </div>
 {% endblock %}

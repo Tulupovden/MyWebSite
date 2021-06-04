@@ -23,6 +23,9 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="{{ url_for('main.index') }}">Домой</a></li>
+                {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('main.user', username=current_user.username) }}">Профиль</a></li>
+                {% endif %}
             </ul>
              <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
@@ -58,5 +61,5 @@
 {% block scripts %}
 {{ super() }}
 {{ moment.include_moment() }}
-{{ moment.locale('rus') }}
+{{ moment.locale(auto_detect=True) }}
 {% endblock %}

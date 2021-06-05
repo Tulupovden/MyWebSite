@@ -1,8 +1,8 @@
-from datetime import datetime
-import time
 import unittest
+import time
+from datetime import datetime
 from app import create_app, db
-from app.models import User, AnonymousUser, Permission, Role
+from app.models import User, AnonymousUser, Role, Permission
 
 
 class UserModelTestCase(unittest.TestCase):
@@ -11,6 +11,7 @@ class UserModelTestCase(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
+        Role.insert_roles()
 
     def tearDown(self):
         db.session.remove()
@@ -164,7 +165,7 @@ class UserModelTestCase(unittest.TestCase):
             gravatar_pg = u.gravatar(rating='pg')
             gravatar_retro = u.gravatar(default='retro')
         self.assertTrue('https://secure.gravatar.com/avatar/' +
-                        'd4c74594d841139328695756648b6bd6' in gravatar)
+                        'd4c74594d841139328695756648b6bd6'in gravatar)
         self.assertTrue('s=256' in gravatar_256)
         self.assertTrue('r=pg' in gravatar_pg)
         self.assertTrue('d=retro' in gravatar_retro)

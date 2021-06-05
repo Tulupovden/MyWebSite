@@ -7,7 +7,7 @@ import bleach
 from flask import current_app, request, url_for
 from flask_login import UserMixin, AnonymousUserMixin
 from . import db, login_manager
-from .api.exceptions import ValidationError
+from app.exceptions import ValidationError
 
 
 class Permission:

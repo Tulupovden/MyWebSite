@@ -117,11 +117,11 @@ def follow(username):
         flash('Недопустимый пользователь.')
         return redirect(url_for('.index'))
     if current_user.is_following(user):
-        flash('Вы уже следите за этим пользователем.')
+        flash('Вы уже подписаны на этого пользователя.')
         return redirect(url_for('.user', username=username))
     current_user.follow(user)
     db.session.commit()
-    flash('Теперь вы следите за %s.' % username)
+    flash('Теперь подписаны на %s.' % username)
     return redirect(url_for('.user', username=username))
 
 
@@ -171,6 +171,6 @@ def followed_by(username):
         error_out=False)
     follows = [{'user': item.followed, 'timestamp': item.timestamp}
                for item in pagination.items]
-    return render_template('followers.html', user=user, title="Подписан",
+    return render_template('followers.html', user=user, title="Подписки",
                            endpoint='.followed_by', pagination=pagination,
                            follows=follows)

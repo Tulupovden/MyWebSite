@@ -48,3 +48,8 @@ class EditProfileAdminForm(FlaskForm):
         if field.data != self.user.username and \
                 User.query.filter_by(username=field.data).first():
             raise ValidationError('Имя пользователя занято.')
+
+
+class PostForm(FlaskForm):
+    body = TextAreaField("Что нового?", validators=[DataRequired()])
+    submit = SubmitField('Отправить')

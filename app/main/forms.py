@@ -54,3 +54,8 @@ class EditProfileAdminForm(FlaskForm):
 class PostForm(FlaskForm):
     body = PageDownField("Что нового?", validators=[DataRequired()])
     submit = SubmitField('Отправить')
+
+
+class CommentForm(FlaskForm):
+    body = StringField('Введите ваш комментарий', validators=[DataRequired()])
+    submit = SubmitField('Отправить')

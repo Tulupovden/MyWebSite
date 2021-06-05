@@ -29,6 +29,9 @@
                 <a href="{{ url_for('.post', id=post.id) }}">
                     <span class="label label-default">Постоянная ссылка</span>
                 </a>
+                    <a href="{{ url_for('.post', id=post.id) }}#comments">
+                    <span class="label label-primary">{{ post.comments.count() }} Комментарий(-ев/-я)</span>
+                </a>
             </div>
         </div>
     </li>
